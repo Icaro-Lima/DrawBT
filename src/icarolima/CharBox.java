@@ -2,26 +2,56 @@ package icarolima;
 
 public class CharBox {
 
-	private String[] box;
+	private StringBuilder[] box;
 	
 	public CharBox(String text) {
-		this.box = new String[] {
-				new String(),
-				new String(),
-				new String()
-		};
+		this.generateBox(text.length() + 4, 3);
 		
-		this.box[0] += "/-";
-		this.box[1] += "| ";
-		this.box[2] += "\\-";
+		this.writeOnBox(" -" + multiplyChar(text.length(), '-') + "- ", 0, 0);
+		this.writeOnBox("| " + text + " |", 1, 0);
+		this.writeOnBox(" -" + multiplyChar(text.length(), '-') + "- ", 2, 0);
+	}
+	
+	public CharBox(String text, CharBox left, CharBox right) {
+		this(text);
 		
-		this.box[0] += new String(new char[text.length()]).replace('\0', '-');
-		this.box[1] += text;
-		this.box[2] += new String(new char[text.length()]).replace('\0', '-');
+		int leftWidth = 0;
+		if (left != null) {
+			leftWidth = left.box[0].length();
+		}
 		
-		this.box[0] += "-\\";
-		this.box[1] += " |";
-		this.box[2] += "-/";
+		int rightWidth = 0;
+		if (right != null) {
+			rightWidth = right.box[0].length();
+		}
+		
+		int minLeft = this.box[0].length() / 2 - 1 - leftWidth;
+		int maxRight = this.box[0].length() / 2 + 1 + rightWidth;
+		
+		int width = maxRight - minLeft;
+		
+		System.out.println(width);
+	}
+	
+	private void generateBox(int width, int height) {
+		this.box = new StringBuilder[height];
+		for (int i = 0; i < height; i++) {
+			this.box[i] = new StringBuilder(multiplyChar(width, ' '));
+		}
+	}
+	
+	private String multiplyChar(int x, char ch) {
+		return new String(new char[x]).replace('\0', ch);
+	}
+	
+	private void writeOnBox(String text, int i, int j) {
+		if (i >= this.box.length) {
+			return;
+		}
+		
+		for (int jj = 0; j + jj < this.box[0].length() && jj < text.length(); jj++) {
+			this.box[i].setCharAt(j + jj, text.charAt(jj));
+		}
 	}
 	
 	@Override
