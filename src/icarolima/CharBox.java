@@ -4,6 +4,8 @@ public class CharBox {
 
 	private StringBuilder[] box;
 	
+	private int posFather;
+	
 	public CharBox(String text) {
 		this.box = this.generateBox(text.length() + 4, 3);
 		
@@ -16,6 +18,8 @@ public class CharBox {
 		this.writeOnBox(this.box, 
 			" -" + multiplyChar(text.length(), '-') + "- ", 2, 0
 		);
+		
+		this.setPosFather(this.width() / 2);
 	}
 	
 	public CharBox(String text, CharBox left, CharBox right) {
@@ -36,14 +40,27 @@ public class CharBox {
 		rightWidth = right.box[0].length();
 		
 		int width = Math.max(leftWidth + rightWidth, leftWidth +  this.width() / 2) + 2;
-		int height = this.box.length + Math.max(left.box.length, right.box.length);
+		int height = this.box.length + Math.max(left.box.length, right.box.length) + 3;
 		
 		StringBuilder[] box = this.generateBox(width, height);
 		
-		this.writeOnBox(box, this.box, 0, leftWidth - 1 - this.width() / 2);
+		int posFather = leftWidth;
+		this.setPosFather(posFather);
+		this.writeOnBox(box, this.box, 0, posFather - this.width() / 2);
 		
-		this.writeOnBox(box, left.box, this.height(), 0);
-		this.writeOnBox(box, right.box, this.height(), left.width() + 2);
+		int posLeft = leftWidth / 2;
+		this.writeOnBox(box, left.box, this.height() + 3, posLeft - leftWidth / 2);
+		
+		int posRight = left.width() + 2 + rightWidth / 2;
+		this.writeOnBox(box, right.box, this.height() + 3, posRight - rightWidth / 2);
+		
+		writeOnBox(box, "|", this.height(), posFather);
+		writeOnBox(box, multiplyChar(posFather - posLeft, '-'), this.height() + 1, posLeft + 1);
+		writeOnBox(box, "/", this.height() + 2, posLeft);
+		
+		writeOnBox(box, "|", this.height(), posFather);
+		writeOnBox(box, multiplyChar(leftWidth + 2 + right.posFather - posFather, '-'), this.height() + 1, posFather);
+		writeOnBox(box, "\\", this.height() + 2, leftWidth + 2 + right.posFather);
 		
 		this.box = box;
 	}
@@ -85,6 +102,14 @@ public class CharBox {
 		for (int ii = 0; i + ii < mainBox.length && ii < box.length; ii++) {
 			writeOnBox(mainBox, box[ii].toString(), i + ii, j);
 		}
+	}
+	
+	public int getPosFather() {
+		return posFather;
+	}
+
+	private void setPosFather(int posFather) {
+		this.posFather = posFather;
 	}
 	
 	@Override
