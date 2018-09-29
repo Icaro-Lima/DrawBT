@@ -5,52 +5,85 @@ public class CharBox {
 	private StringBuilder[] box;
 	
 	public CharBox(String text) {
-		this.generateBox(text.length() + 4, 3);
+		this.box = this.generateBox(text.length() + 4, 3);
 		
-		this.writeOnBox(" -" + multiplyChar(text.length(), '-') + "- ", 0, 0);
-		this.writeOnBox("| " + text + " |", 1, 0);
-		this.writeOnBox(" -" + multiplyChar(text.length(), '-') + "- ", 2, 0);
+		this.writeOnBox(this.box, 
+			" -" + multiplyChar(text.length(), '-') + "- ", 0, 0
+		);
+		
+		this.writeOnBox(this.box, "| " + text + " |", 1, 0);
+		
+		this.writeOnBox(this.box, 
+			" -" + multiplyChar(text.length(), '-') + "- ", 2, 0
+		);
 	}
 	
 	public CharBox(String text, CharBox left, CharBox right) {
 		this(text);
 		
-		int leftWidth = 0;
-		if (left != null) {
-			leftWidth = left.box[0].length();
+		if (left == null) {
+			left = new CharBox("");
 		}
+		
+		if (right == null) {
+			right = new CharBox("");
+		}
+		
+		int leftWidth = 0;
+		leftWidth = left.box[0].length();
 		
 		int rightWidth = 0;
-		if (right != null) {
-			rightWidth = right.box[0].length();
-		}
+		rightWidth = right.box[0].length();
 		
-		int minLeft = this.box[0].length() / 2 - 1 - leftWidth;
-		int maxRight = this.box[0].length() / 2 + 1 + rightWidth;
+		int width = Math.max(leftWidth + rightWidth, leftWidth +  this.width() / 2) + 2;
+		int height = this.box.length + Math.max(left.box.length, right.box.length);
 		
-		int width = maxRight - minLeft;
+		StringBuilder[] box = this.generateBox(width, height);
 		
-		System.out.println(width);
+		this.writeOnBox(box, this.box, 0, leftWidth - 1 - this.width() / 2);
+		
+		this.writeOnBox(box, left.box, this.height(), 0);
+		this.writeOnBox(box, right.box, this.height(), left.width() + 2);
+		
+		this.box = box;
 	}
 	
-	private void generateBox(int width, int height) {
-		this.box = new StringBuilder[height];
+	public int width() {
+		return this.box[0].length();
+	}
+	
+	public int height() {
+		return this.box.length;
+	}
+	
+	private StringBuilder[] generateBox(int width, int height) {
+		StringBuilder[] box = new StringBuilder[height];
 		for (int i = 0; i < height; i++) {
-			this.box[i] = new StringBuilder(multiplyChar(width, ' '));
+			box[i] = new StringBuilder(multiplyChar(width, ' '));
 		}
+		
+		return box;
 	}
 	
 	private String multiplyChar(int x, char ch) {
 		return new String(new char[x]).replace('\0', ch);
 	}
 	
-	private void writeOnBox(String text, int i, int j) {
-		if (i >= this.box.length) {
+	private void writeOnBox(StringBuilder[] box, String text, int i, int j) {
+		if (i >= box.length) {
 			return;
 		}
-		
-		for (int jj = 0; j + jj < this.box[0].length() && jj < text.length(); jj++) {
-			this.box[i].setCharAt(j + jj, text.charAt(jj));
+				
+		for (int jj = 0; j + jj < box[0].length() && jj < text.length(); jj++) {
+			if (j + jj >= 0) {
+				box[i].setCharAt(j + jj, text.charAt(jj));
+			}
+		}
+	}
+	
+	private void writeOnBox(StringBuilder[] mainBox, StringBuilder[] box, int i, int j) {
+		for (int ii = 0; i + ii < mainBox.length && ii < box.length; ii++) {
+			writeOnBox(mainBox, box[ii].toString(), i + ii, j);
 		}
 	}
 	
