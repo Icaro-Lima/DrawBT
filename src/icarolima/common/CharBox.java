@@ -1,4 +1,4 @@
-package icarolima;
+package icarolima.common;
 
 public class CharBox {
 
