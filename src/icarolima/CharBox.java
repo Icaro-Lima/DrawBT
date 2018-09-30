@@ -39,28 +39,32 @@ public class CharBox {
 		int rightWidth = 0;
 		rightWidth = right.box[0].length();
 		
-		int width = Math.max(leftWidth + rightWidth, leftWidth +  this.width() / 2) + 2;
+		int minleft = Math.min(0, leftWidth - this.width() / 2);
+		int maxright = Math.max(leftWidth + rightWidth, leftWidth + this.width() / 2);
+		
+		int width = maxright - minleft + 3;
 		int height = this.box.length + Math.max(left.box.length, right.box.length) + 3;
 		
 		StringBuilder[] box = this.generateBox(width, height);
 		
-		int posFather = leftWidth;
+		int posFather = Math.max(this.width() / 2, leftWidth);
+		
 		this.setPosFather(posFather);
 		this.writeOnBox(box, this.box, 0, posFather - this.width() / 2);
 		
-		int posLeft = leftWidth / 2;
+		int posLeft = posFather - 1 - leftWidth / 2;
 		this.writeOnBox(box, left.box, this.height() + 3, posLeft - leftWidth / 2);
 		
-		int posRight = left.width() + 2 + rightWidth / 2;
+		int posRight = posFather + 1 + rightWidth / 2;
 		this.writeOnBox(box, right.box, this.height() + 3, posRight - rightWidth / 2);
 		
 		writeOnBox(box, "|", this.height(), posFather);
-		writeOnBox(box, multiplyChar(posFather - posLeft, '-'), this.height() + 1, posLeft + 1);
-		writeOnBox(box, "/", this.height() + 2, posLeft);
+		writeOnBox(box, multiplyChar((posFather - posLeft) + (leftWidth / 2 - left.posFather), '-'), this.height() + 1, posLeft - (leftWidth / 2 - left.posFather) + 1);
+		writeOnBox(box, "/", this.height() + 2, posLeft - (leftWidth / 2 - left.posFather));
 		
 		writeOnBox(box, "|", this.height(), posFather);
-		writeOnBox(box, multiplyChar(leftWidth + 2 + right.posFather - posFather, '-'), this.height() + 1, posFather);
-		writeOnBox(box, "\\", this.height() + 2, leftWidth + 2 + right.posFather);
+		writeOnBox(box, multiplyChar((posRight - posFather) + (right.posFather - rightWidth / 2), '-'), this.height() + 1, posFather);
+		writeOnBox(box, "\\", this.height() + 2, posRight + (right.posFather - rightWidth / 2));
 		
 		this.box = box;
 	}

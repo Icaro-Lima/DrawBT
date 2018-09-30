@@ -3,6 +3,12 @@ package icarolima;
 public class Main {
 
 	public static void main(String[] args) {
+		CharBox biga = new CharBox("Abc");
+		CharBox bigb = new CharBox("Def");
+		CharBox bigc = new CharBox("ABCDEFGHIJKLMNOPQRSTUVWXYZ", biga, bigb);
+		
+		System.out.println(bigc);
+		
 		CharBox g = new CharBox("Genivaldo");
 		CharBox h = new CharBox("Lopcita");
 
@@ -12,8 +18,13 @@ public class Main {
 		CharBox e = new CharBox("Chavasca", f, null);
 		CharBox c = new CharBox("Silveria", d, e);
 		CharBox a = new CharBox("José", b, c);
+		CharBox k = new CharBox("Maria", a, null);
 		
-		System.out.println(a);
+		System.out.println(g);
+		System.out.println("----------------");
+		System.out.println(c);
+		System.out.println("----------------");
+		System.out.println(k);
 	}
 
 }
