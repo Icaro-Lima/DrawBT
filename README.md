@@ -56,3 +56,7 @@ public static void main(String[] args) {
                         |  || 15 |
                          --  ---- 
 ```
+
+## Visualizando sua própria implementação
+
+Para visualizar sua própria implementação, basta pegar a pré-ordem e inserir elemento por elemento na minha implementação, por fim, faça `System.out.println(BSTImpl);`
