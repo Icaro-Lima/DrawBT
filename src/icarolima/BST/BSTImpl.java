@@ -1,5 +1,6 @@
 package icarolima.BST;
 
+import icarolima.common.CharBox;
 import icarolima.common.Drawable;
 
 public class BSTImpl<T extends Comparable<T>> implements Drawable {
@@ -19,6 +20,10 @@ public class BSTImpl<T extends Comparable<T>> implements Drawable {
 		} else {
 			this.addOnRight(value);
 		}
+	}
+	
+	public boolean isLeaf() {
+		return this.left == null && this.right == null;
 	}
 	
 	private void addOnLeft(T value) {
@@ -51,8 +56,26 @@ public class BSTImpl<T extends Comparable<T>> implements Drawable {
 
 	@Override
 	public String draw() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.drawAux().toString();
+	}
+	
+	private CharBox drawAux() {
+		if (this.isLeaf()) {
+			return new CharBox(this.value.toString());
+		} else {
+			CharBox left = null;
+			CharBox right = null;
+			
+			if (this.left != null) {
+				left = this.left.drawAux();
+			}
+			
+			if (this.right != null) {
+				right = this.right.drawAux();
+			}
+			
+			return new CharBox(this.value.toString(), left, right);
+		}
 	}
 	
 }
