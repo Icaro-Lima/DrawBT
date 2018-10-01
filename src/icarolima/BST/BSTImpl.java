@@ -1,9 +1,8 @@
 package icarolima.BST;
 
 import icarolima.common.CharBox;
-import icarolima.common.Drawable;
 
-public class BSTImpl<T extends Comparable<T>> implements Drawable {
+public class BSTImpl<T extends Comparable<T>> {
 	
 	private T value;
 	
@@ -55,7 +54,7 @@ public class BSTImpl<T extends Comparable<T>> implements Drawable {
 	}
 
 	@Override
-	public String draw() {
+	public String toString() {
 		return this.drawAux().toString();
 	}
 	

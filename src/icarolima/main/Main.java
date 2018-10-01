@@ -17,7 +17,7 @@ public class Main {
 		bst.add(14);
 		bst.add(15);
 		
-		System.out.println(bst.draw());
+		System.out.println(bst);
 	}
 	
 }
